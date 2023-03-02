@@ -42,22 +42,24 @@ export default {
 
     methods: {
       Login () {
-      
-        if (this.username == 'viewer' && this.password == 'view') {
-            this.msg = 'Success! Logged in as a viewer.'
-        }
+        
+        let attempt = this.users.find(u => u.name == this.username && u.pw == this.password)
 
-        else if (this.username == 'editor' && this.password == 'edit') {
-          this.msg = 'Nice! Logged in as an editor'
+        if (attempt) {
+          this.$emit('Role', attempt.role)
+          
         }
         else {
-          this.msg = 'Login attempt failed, please try again.'
+          this.msg = 'Login attempt failed. Please try again.'
         }
+
         }
-      }
+      
+        }
+  }
 
 
-}
+
 
 
 </script>

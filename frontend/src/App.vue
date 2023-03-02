@@ -6,7 +6,8 @@ export default {
   name: 'App',
   data() {
     return {
-      orgName: 'Dataplatform'
+      orgName: 'Dataplatform',
+      activeRole: ''
     }
   },
   created() {
@@ -26,33 +27,13 @@ export default {
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
             <li>
-              <router-link to="/">
+              <router-link to="/home">
                 <span
                   style="position: relative; top: 6px"
                   class="material-icons"
                   >dashboard</span
                 >
                 Dashboard
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/intakeform">
-                <span
-                  style="position: relative; top: 6px"
-                  class="material-icons"
-                  >people</span
-                >
-                Client Intake Form
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/eventform">
-                <span
-                  style="position: relative; top: 6px"
-                  class="material-icons"
-                  >event</span
-                >
-                Create Event
               </router-link>
             </li>
             <li>
@@ -75,6 +56,29 @@ export default {
                 Find Event
               </router-link>
             </li>
+            <span v-if="this.activeRole == 'write'" >
+              <li>
+                <router-link to="/intakeform">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >people</span
+                  >
+
+                  Client Intake Form
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/eventform">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >event</span
+                  >
+                  Create Event
+                </router-link>
+              </li>
+            </span>
           </ul>
         </nav>
       </header>
@@ -87,7 +91,7 @@ export default {
         <h1 class="mr-20 text-3xl text-white">{{ this.orgName }}</h1>
       </section>
       <div>
-        <router-view></router-view>
+        <router-view @Role="activeRole = $event"></router-view>
       </div>
     </div>
   </main>
