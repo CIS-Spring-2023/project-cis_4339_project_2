@@ -92,6 +92,7 @@ export default {
     </div>
   </main>
 </template>
+
 <style>
 #_container {
   background-color: #c8102e;
