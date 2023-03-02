@@ -42,24 +42,25 @@ export default {
 
     methods: {
       Login () {
-        
-        let attempt = this.users.find(u => u.name == this.username && u.pw == this.password)
+        this.v$.validate().then((valid) => {
+          if (valid) {
+            let attempt = this.users.find(u => u.name == this.username && u.pw == this.password)
 
-        if (attempt) {
-          this.$emit('Role', attempt.role)
-          
-        }
-        else {
-          this.msg = 'Login attempt failed. Please try again.'
-        }
+            if (attempt) {
+                this.$emit('Role', attempt.role)
+                this.$router.push('/home')
+            }
 
-        }
+            else {
+              this.msg = 'Login attempt failed. Please try again.'
+            }
+
+          }
+        })
+         }
       
-        }
-  }
-
-
-
+    }
+}
 
 
 </script>
