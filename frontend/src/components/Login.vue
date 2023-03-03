@@ -1,13 +1,17 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import axios from 'axios'
+import { loggedInUser } from '../store/LoggedIn'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 
 export default {
     setup() {
-        return { v$: useVuelidate({ $autoDirty: true }) }
+      const store = loggedInUser()
+        return { 
+          v$: useVuelidate({ $autoDirty: true }),
+          store
+       }
     },
 
     data () {
@@ -38,27 +42,6 @@ export default {
             username: { required },
             password: { required }
         }
-    },
-
-    methods: {
-      Login () {
-        this.v$.validate().then((valid) => {
-          if (valid) {
-            let attempt = this.users.find(u => u.name == this.username && u.pw == this.password)
-
-            if (attempt) {
-                this.$emit('Role', attempt.role)
-                this.$router.push('/home')
-            }
-
-            else {
-              this.msg = 'Login attempt failed. Please try again.'
-            }
-
-          }
-        })
-         }
-      
     }
 }
 
@@ -74,7 +57,7 @@ export default {
       </h1>
       <div class="px-10 py-20">
         <!-- @submit.prevent stops the submit event from reloading the page-->
-        <form @submit.prevent="Login">
+        <form @submit.prevent="store.login(username, password)">
           <!-- grid container -->
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
@@ -108,6 +91,7 @@ export default {
             <div class="flex flex-col">
               <label class="block">
                 <span class="text-gray-700">Password</span>
+                <span style="color: #ff0000">*</span>
                 <input
                   type="password"
                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -130,7 +114,7 @@ export default {
                 Log In
               </button>
 
-              <span> {{  msg }}</span>
+              <span> {{  store.loginErr }}</span>
             </div>
           </div>
         </form>

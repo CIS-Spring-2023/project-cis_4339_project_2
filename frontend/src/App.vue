@@ -1,13 +1,19 @@
 <script>
 import axios from 'axios'
+import { loggedInUser } from './store/LoggedIn'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   name: 'App',
+
+  setup() {
+    const user = loggedInUser();
+    return { user };
+  },
+
   data() {
     return {
-      orgName: 'Dataplatform',
-      activeRole: ''
+      orgName: 'Dataplatform'
     }
   },
   created() {
@@ -26,59 +32,85 @@ export default {
         </section>
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
-            <li>
-              <router-link to="/home">
-                <span
-                  style="position: relative; top: 6px"
-                  class="material-icons"
-                  >dashboard</span
-                >
-                Dashboard
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/findclient">
-                <span
-                  style="position: relative; top: 6px"
-                  class="material-icons"
-                  >search</span
-                >
-                Find Client
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/findevents">
-                <span
-                  style="position: relative; top: 6px"
-                  class="material-icons"
-                  >search</span
-                >
-                Find Event
-              </router-link>
-            </li>
-            <span v-if="this.activeRole == 'write'" >
+            <div v-if="user.LoggedIn">
               <li>
-                <router-link to="/intakeform">
+                <router-link to="/home">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >dashboard</span
+                  >
+                  Dashboard
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/findclient">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >search</span
+                  >
+                  Find Client
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/findevents">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >search</span
+                  >
+                  Find Event
+                </router-link>
+              </li>
+              <span v-if="user.role == 'write'" >
+                <li>
+                  <router-link to="/intakeform">
+                    <span
+                      style="position: relative; top: 6px"
+                      class="material-icons"
+                      >people</span
+                    >
+
+                    Client Intake Form
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/eventform">
+                    <span
+                      style="position: relative; top: 6px"
+                      class="material-icons"
+                      >event</span
+                    >
+                    Create Event
+                  </router-link>
+                </li>
+              </span>
+              <li>
+                <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >
+                    people
+                  </span>
+                  <a href="">
+                    <span @click="user.logout()">Log Out</span>
+                  </a>
+              </li>
+            </div>
+            <li v-if="!user.LoggedIn">
+              <router-link to="/">
                   <span
                     style="position: relative; top: 6px"
                     class="material-icons"
                     >people</span
                   >
+                  Log In
+                </router-link>
+              
+            </li>
 
-                  Client Intake Form
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/eventform">
-                  <span
-                    style="position: relative; top: 6px"
-                    class="material-icons"
-                    >event</span
-                  >
-                  Create Event
-                </router-link>
-              </li>
-            </span>
+
           </ul>
         </nav>
       </header>
@@ -91,7 +123,7 @@ export default {
         <h1 class="mr-20 text-3xl text-white">{{ this.orgName }}</h1>
       </section>
       <div>
-        <router-view @Role="activeRole = $event"></router-view>
+        <router-view></router-view>
       </div>
     </div>
   </main>
