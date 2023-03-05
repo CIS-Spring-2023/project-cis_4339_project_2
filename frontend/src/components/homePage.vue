@@ -1,71 +1,13 @@
 <script>
 import { DateTime } from 'luxon'
 import axios from 'axios'
-import AttendanceChart from './barChart.vue'
+import piechart from './piechart.vue'
 const apiURL = import.meta.env.VITE_ROOT_API
 
-export default {
+export default{
+  name: 'piechart',
   components: {
-    AttendanceChart
-  },
-  data() {
-    return {
-      recentEvents: [],
-      labels: [],
-      chartData: [],
-      loading: false,
-      error: null
-    }
-  },
-  mounted() {
-    this.getAttendanceData()
-  },
-  methods: {
-    async getAttendanceData() {
-      try {
-        this.error = null
-        this.loading = true
-        const response = await axios.get(`${apiURL}/events/attendance`)
-        this.recentEvents = response.data
-        this.labels = response.data.map(
-          (item) => `${item.name} (${this.formattedDate(item.date)})`
-        )
-        this.chartData = response.data.map((item) => item.attendees.length)
-      } catch (err) {
-        if (err.response) {
-          // client received an error response (5xx, 4xx)
-          this.error = {
-            title: 'Server Response',
-            message: err.message
-          }
-        } else if (err.request) {
-          // client never received a response, or request never left
-          this.error = {
-            title: 'Unable to Reach Server',
-            message: err.message
-          }
-        } else {
-          // There's probably an error in your code
-          this.error = {
-            title: 'Application Error',
-            message: err.message
-          }
-        }
-      }
-      this.loading = false
-    },
-    formattedDate(datetimeDB) {
-      const dt = DateTime.fromISO(datetimeDB, {
-        zone: 'utc'
-      })
-      return dt
-        .setZone(DateTime.now().zoneName, { keepLocalTime: true })
-        .toLocaleString()
-    },
-    // method to allow click through table to event details
-    editEvent(eventID) {
-      this.$router.push({ name: 'eventdetails', params: { id: eventID } })
-    }
+    piechart
   }
 }
 </script>
@@ -104,14 +46,10 @@ export default {
               </tr>
             </tbody>
           </table>
-          <div>
-            <AttendanceChart
-              v-if="!loading && !error"
-              :label="labels"
-              :chart-data="chartData"
-            ></AttendanceChart>
-
-            <!-- Start of loading animation -->
+            <div id="piechart">
+              <piechart/>
+            </div>
+  
             <div class="mt-40" v-if="loading">
               <p
                 class="text-6xl font-bold text-center text-gray-500 animate-pulse"
@@ -134,6 +72,5 @@ export default {
           </div>
         </div>
       </div>
-    </div>
   </main>
 </template>

@@ -13,7 +13,7 @@ export default {
 
   data() {
     return {
-      orgName: 'Dataplatform'
+      orgName: 'Community Platform'
     }
   },
   created() {
