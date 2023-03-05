@@ -1,7 +1,10 @@
+
+//Example chart data, will change later 
+
 export const piechartdata = {
   type: "pie",
   data: {
-    labels: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
+    labels: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"], 
     datasets: [
       {
         label: "Number of Moons",

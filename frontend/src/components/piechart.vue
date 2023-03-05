@@ -13,12 +13,7 @@ import { pie, mixins } from 'vue-chartjs';
 
 
 export default {
-  extends: pie,
-  props: ['chartData'],
-  mounted() {
-    this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false });
-  },
-};
+  name: 'PlanetChart'
+  components: {piechartdata}
+
 </script>
-
-
