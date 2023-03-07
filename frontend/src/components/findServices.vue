@@ -4,6 +4,10 @@ const apiURL = import.meta.env.VITE_ROOT_API
 import {servicesStore} from '../store/Services'
 
 export default {
+  setup() {
+    const store = servicesStore()
+    return { store }
+  },
   data() {
     return {
       services: [],
@@ -13,27 +17,14 @@ export default {
       serviceDescription: ''
     }
   },
-  created() {
-    this.getServices()
-  },
   methods: {
     handleSubmitForm() {
-      const store = servicesStore();
-      let services = store.getServices();
-    if (this.searchBy === 'Service Name'){
-        services = services.filter((service) => service.serviceName.includes(this.serviceName));
-    } else if (this.searchBy ==='Services Description'){
-        services = services.filter((service) => service.serviceDescription.includes(this.serviceDescription));
-    }
-    
-      this.services = services
-
+      this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
 
     },
     // abstract get Servicess call
     getServices() {
-      const store = servicesStore();
-      this.services = store.getServices();
+      this.services = this.store.getServices();
       window.scrollTo(0, 0)
     },
     clearSearch() {
@@ -141,7 +132,7 @@ export default {
           <tbody class="divide-y divide-gray-300">
             <tr
               @click="editServices(service._id)"
-              v-for="service in services"
+              v-for="service in store.services"
               :key="service._id"
             >
               <td class="p-2 text-left">
