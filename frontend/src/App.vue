@@ -95,6 +95,16 @@ export default {
                     Create Event
                   </router-link>
                 </li>
+                <li>
+                  <router-link to="/createServices">
+                    <span
+                      style="position: relative; top: 6px"
+                      class="material-icons"
+                      >event</span
+                    >
+                    Create Services
+                  </router-link>
+                </li>
               </span>
               <li>
                 <span

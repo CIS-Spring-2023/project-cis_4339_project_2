@@ -20,5 +20,9 @@ export const servicesStore = defineStore({
       }
       return services;
     },
+    addService(service) {
+      this.services.push(service);
+    },
+
   }
 })

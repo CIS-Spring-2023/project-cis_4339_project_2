@@ -45,11 +45,17 @@ const routes = [
     component: () => import('../components/findServices.vue')
   },
   {
+    path: '/createServices',
+    name: 'createServices',
+    component: () => import('../components/createServices.vue')
+  },
+  {
     path: '/eventdetails/:id',
     name: 'eventdetails',
     props: true,
     component: () => import('../components/eventDetails.vue')
   }
+  
 ]
 const router = createRouter({
   history: createWebHistory(),
