@@ -32,17 +32,17 @@ export default {
         </section>
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
-            <div v-if="user.LoggedIn">
+            
               <li>
                 <router-link to="/home">
                   <span
                     style="position: relative; top: 6px"
                     class="material-icons"
-                    >dashboard</span
-                  >
+                    >dashboard</span>
                   Dashboard
                 </router-link>
               </li>
+              <div v-if="user.LoggedIn">
               <li>
                 <router-link to="/findclient">
                   <span
@@ -91,7 +91,7 @@ export default {
                     style="position: relative; top: 6px"
                     class="material-icons"
                     >
-                    people
+                    person
                   </span>
                   <a href="">
                     <span @click="user.logout()">Log Out</span>
@@ -103,7 +103,7 @@ export default {
                   <span
                     style="position: relative; top: 6px"
                     class="material-icons"
-                    >people</span
+                    >person</span
                   >
                   Log In
                 </router-link>
