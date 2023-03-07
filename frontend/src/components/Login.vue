@@ -42,37 +42,34 @@ export default {
             username: { required },
             password: { required }
         }
+    },
+
+    methods: {
+      submitLogin(f) {
+        this.v$.$validate().then((valid) => {
+          if (valid) {
+            console.log(valid)
+            f(this.username, this.password)
+          }
+        })
+      }
     }
 }
 
 
 </script>
 
+
+
+
 <template>
-    <main>
-      <h1
-        class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
-      >
-        Login
-      </h1>
-      <div class="px-10 py-20">
-        <!-- @submit.prevent stops the submit event from reloading the page-->
-        <form @submit.prevent="store.login(username, password)">
-          <!-- grid container -->
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
-          >
-           <!-- <h2 class="text-2xl font-bold">Personal Details</h2> -->
-            <!-- form field -->
-            <div class="flex flex-col">
-              <label class="block">
-                <span class="text-gray-700">Username</span>
-                <span style="color: #ff0000">*</span>
-                <input
-                  type="text"
-                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  v-model="username"
-                />
+          <form class="mt-8" @submit.prevent="submitLogin(store.login)">
+            <div class="mx-auto max-w-lg">
+              <div class="py-2">
+                <span class="px-1 text-sm text-gray-600">Username</span>
+                <input type="text" v-model="username"
+                  class="text-md block px-3 py-2  rounded-lg w-full 
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none">
                 <span class="text-black" v-if="v$.username.$error">
                   <p
                     class="text-red-700"
@@ -82,21 +79,16 @@ export default {
                     {{ error.$message }}!
                   </p>
                 </span>
-              </label>
-            </div>
-  
-  
-            <div></div>
-            <!-- form field -->
-            <div class="flex flex-col">
-              <label class="block">
-                <span class="text-gray-700">Password</span>
-                <span style="color: #ff0000">*</span>
-                <input
-                  type="password"
-                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                  v-model="password"
-                />
+              </div>
+              <div class="py-2">
+                <span class="px-1 text-sm text-gray-600">Password</span>
+                <div class="relative">
+                  <input type="password" v-model="password" class="text-md block px-3 py-2 rounded-lg w-full 
+                bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md
+                focus:placeholder-gray-500
+                focus:bg-white 
+                focus:border-gray-600  
+                focus:outline-none">
                 <span class="text-black" v-if="v$.password.$error">
                   <p
                     class="text-red-700"
@@ -106,20 +98,18 @@ export default {
                     {{ error.$message }}!
                   </p>
                 </span>
-              </label>
-            </div>
-            <!-- submit button -->
-            <div class="flex justify-between mt-100 mr-200">
-              <button class="bg-red-700 text-white rounded" type="submit">
-                Log In
+                </div>
+              </div>
+               
+                      <button class="mt-3 text-lg font-semibold 
+                bg-red-700 w-full text-white rounded-lg
+                px-6 py-3 block shadow-xl hover:text-white hover:bg-black" type="submit">
+                Login
               </button>
-
-              <span> {{  store.loginErr }}</span>
+              <span v-if="store.loginErr"> {{  store.loginErr }}! </span>
             </div>
-          </div>
-        </form>
-      </div>
-    </main>
-  </template>
-  
+          </form>
 
+
+
+</template>
