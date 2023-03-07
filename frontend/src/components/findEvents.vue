@@ -1,9 +1,15 @@
 <script>
 import { DateTime } from 'luxon'
+import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
+  setup() {
+    const user = loggedInUser();
+    return { user }
+  },
+
   data() {
     return {
       events: [],
@@ -14,8 +20,13 @@ export default {
     }
   },
   mounted() {
+    if (!this.user.LoggedIn) {
+      this.$router.push("/")
+    };
+
     this.getEvents()
   },
+  
   methods: {
     // better formattedDate
     formattedDate(datetimeDB) {

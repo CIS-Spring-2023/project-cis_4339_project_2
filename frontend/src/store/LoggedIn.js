@@ -55,5 +55,5 @@ export const loggedInUser = defineStore ({
 function userLogin(u, p) {
   if (u == "viewer" && p == "view") return Promise.resolve({success: true, name: 'Viewer', role: "read"});
   if (u == "editor" && p == "edit") return Promise.resolve({success: true, name: 'Editor', role: "write"});
-  return Promise.reject(new Error("Invalid credentials")); 
+  return Promise.reject(new Error("Invalid Credentials")); 
 }

@@ -2,6 +2,7 @@
 import useVuelidate from '@vuelidate/core'
 import { required, email, alpha, numeric } from '@vuelidate/validators'
 import VueMultiselect from 'vue-multiselect'
+import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 import { DateTime } from 'luxon'
 const apiURL = import.meta.env.VITE_ROOT_API
@@ -10,7 +11,9 @@ export default {
   props: ['id'],
   components: { VueMultiselect },
   setup() {
-    return { v$: useVuelidate({ $autoDirty: true }) }
+    const user = loggedInUser();
+    return { v$: useVuelidate({ $autoDirty: true }),
+  user }
   },
   data() {
     return {
@@ -50,6 +53,10 @@ export default {
   },
   mounted() {
     window.scrollTo(0, 0)
+    if (this.user.role != 'write') {
+      this.$router.push("/")
+    }
+
   },
   methods: {
     // better formattedDate function
