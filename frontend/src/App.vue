@@ -63,6 +63,16 @@ export default {
                   Find Event
                 </router-link>
               </li>
+              <li>
+                <router-link to="/findservices">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >search</span
+                  >
+                  Find Services
+                </router-link>
+              </li>
               <span v-if="user.role == 'write'" >
                 <li>
                   <router-link to="/intakeform">
@@ -83,6 +93,16 @@ export default {
                       >event</span
                     >
                     Create Event
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/createServices">
+                    <span
+                      style="position: relative; top: 6px"
+                      class="material-icons"
+                      >event</span
+                    >
+                    Create Services
                   </router-link>
                 </li>
               </span>
