@@ -40,7 +40,7 @@ export default {
       this.getServices()
     },
     editServices(ServicesID) {
-      this.$router.push({ name: 'updateServices', params: { id: ServicesID } })
+      this.$router.push({ name: 'editServices', params: { id: ServicesID } })
     }
   }
 }

@@ -5,7 +5,8 @@ import {servicesStore} from '../store/Services'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
-  setup() {
+   props: ['id'],
+   setup() {
     const store = servicesStore()
     return {
         v$: useVuelidate({ $autoDirty: true}),
@@ -23,13 +24,21 @@ export default {
       
     }
   },
+  created() {
+  const serviceId = this.$route.params.id;
+  this.service = this.store.getService(serviceId)
+  },
+  mounted() {
+    window.scrollTo(0, 0)
+  },
   methods: {
     async handleSubmitForm() {
       // Checks to see if there are any errors in validation
       const isFormCorrect = await this.v$.$validate()
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
-        this.store.addService(this.service);
+        const serviceId = this.$route.params.id
+        this.store.updateService(serviceId,this.service);
         this.$router.push({name:'findservices'})
 
       }
@@ -52,7 +61,7 @@ export default {
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
       >
-        Create New Services
+        Edit Services
       </h1>
     </div>
     <div class="px-10 py-20">
@@ -95,7 +104,7 @@ export default {
               <textarea
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 rows="2"
-                v-model="service.serviceDesc"
+                v-model="service.serviceDescription"
               ></textarea>
               <span class="text-black" v-if="v$.service.serviceDescription.$error">
                 <p
@@ -121,7 +130,7 @@ export default {
 
         <div class="flex justify-between mt-10 mr-20">
           <button class="bg-red-700 text-white rounded" type="submit">
-            Add New Service
+            Update Service
           </button>
         </div>
       </form>
