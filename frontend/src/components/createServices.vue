@@ -57,7 +57,7 @@ export default {
     </div>
     <div class="px-10 py-20">
       <!-- @submit.prevent stops the submit event from reloading the page-->
-      <form @submit.prevent="handleSubmitForm">
+      <form @submit.prevent="handleSubmitForm()">
         <!-- grid container -->
         <div
         >

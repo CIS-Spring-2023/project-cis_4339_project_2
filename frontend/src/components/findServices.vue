@@ -2,11 +2,12 @@
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 import {servicesStore} from '../store/Services'
-
+import { loggedInUser } from '../store/LoggedIn'
 export default {
   setup() {
     const store = servicesStore()
-    return { store }
+    const user = loggedInUser()
+    return { store, user }
   },
   data() {
     return {
@@ -17,9 +18,7 @@ export default {
       serviceDescription: ''
     }
   },
-  created() {
-    this.services = this.store.getServices();
-  },
+
   methods: {
     handleSubmitForm() {
       this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
@@ -134,15 +133,24 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editServices(service._id)"
-              v-for="service in services"
+              v-for="service in store.getServices()"
               :key="service._id"
             >
-              <td class="p-2 text-left">
+              <td @click="user.role == 'write' ? {edit: editServices(service._id)} : {}" 
+              class="p-2 text-left">
                 {{ service.serviceName }}
               </td>
-              <td class="p-2 text-left">
+              <td @click="user.role == 'write' ? {edit: editServices(service._id)} : {}" 
+              class="p-2 text-left">
                 {{ service.serviceDescription }}
+              </td>
+
+              <td v-if="user.role == 'write'">
+                <button  @click="service.active = !service.active"
+            class="bg-red-700 text-white rounded"
+          >
+            Delete
+          </button>
               </td>
             </tr>
           </tbody>
