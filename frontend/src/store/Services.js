@@ -12,7 +12,7 @@ export const servicesStore = defineStore({
   }),
   actions: {
     getServices(searchBy, serviceName, serviceDescription) {
-      const services = this.services;
+      let services = this.services;
       if (searchBy === 'Service Name'){
         services = services.filter((service) => service.serviceName.includes(serviceName));
       } else if (searchBy ==='Services Description'){

@@ -17,6 +17,9 @@ export default {
       serviceDescription: ''
     }
   },
+  created() {
+    this.services = this.store.getServices();
+  },
   methods: {
     handleSubmitForm() {
       this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
@@ -132,7 +135,7 @@ export default {
           <tbody class="divide-y divide-gray-300">
             <tr
               @click="editServices(service._id)"
-              v-for="service in store.services"
+              v-for="service in services"
               :key="service._id"
             >
               <td class="p-2 text-left">
