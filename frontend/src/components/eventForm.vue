@@ -2,6 +2,7 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import {servicesStore} from '../store/Services'
+import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
@@ -145,6 +146,7 @@ export default {
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
             <div v-for="service in store.services" :key="service._id">
+              <div v-if="service.active">
               <label :for="service.serviceName" class="inline-flex items-center">
                 <input
                   type="checkbox"
@@ -156,6 +158,7 @@ export default {
                 />
                 <span class="ml-2"> {{ service.serviceName }} </span>
               </label>
+            </div>
             </div>
           </div>
         </div>

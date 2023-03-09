@@ -33,7 +33,7 @@ export const servicesStore = defineStore({
       return service;
     },
     addService(service) {
-      let s = this.services.findIndex((serv) => serv == service)
+      let s = this.services.findIndex((serv) => serv.serviceName == service.serviceName)
       if (s != -1){
         this.services[s].active = true;
       }
