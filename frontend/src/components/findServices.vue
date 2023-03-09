@@ -33,7 +33,8 @@ export default {
     },
     // abstract get Servicess call
     getServices() {
-      this.services = this.store.getServices();
+      this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
+      return this.services;
       window.scrollTo(0, 0)
     },
     clearSearch() {
@@ -140,7 +141,7 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              v-for="service in store.getServices()"
+              v-for="service in getServices()"
               :key="service._id"
             >
               <td @click="user.role == 'write' ? {edit: editServices(service._id)} : {}" 
