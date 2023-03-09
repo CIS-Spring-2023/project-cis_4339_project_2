@@ -5,11 +5,12 @@ export const servicesStore = defineStore({
   state: () => ({
     // Hardcoded a list of services with name and description properties
     services: [
-      { _id: '0', serviceName: 'Service 1', serviceDescription: 'This is the first service', active: true },
-      { _id: '1', serviceName: 'Service 2', serviceDescription: 'This is the second service', active: true},
-      { _id: '2', serviceName: 'Service 3', serviceDescription: 'This is the third service', active: true}
+      { _id: '0', serviceName: 'Family Support', serviceDescription: 'Group-oriented Activites', active: true },
+      { _id: '1', serviceName: 'Adult Education', serviceDescription: 'Classes for Adults', active: true},
+      { _id: '2', serviceName: 'Youth Services Program', serviceDescription: 'Activities for Children', active: true},
+      { _id: '3', serviceName: 'Early Childhood Education', serviceDescription: 'Education for Toddlers', active: true},
     ],
-    increment: 2
+    increment: 3
   }),
   actions: {
     getServices(searchBy, serviceName, serviceDescription) {

@@ -16,6 +16,7 @@ export default {
         user
     }
   },
+  
   data() {
     return {
       // removed unnecessary extra array to track services
@@ -28,13 +29,15 @@ export default {
     }
   },
   created() {
-    if (this.user.role != 'write') {
-      this.$router.push('/')
-    }
+
   const serviceId = this.$route.params.id;
   this.service = this.store.getService(serviceId)
   },
+
   mounted() {
+    if (this.user.role != 'write') {
+      this.$router.push('/')
+    }
     window.scrollTo(0, 0)
   },
   methods: {

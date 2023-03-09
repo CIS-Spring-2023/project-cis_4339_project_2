@@ -9,6 +9,13 @@ export default {
     const user = loggedInUser()
     return { store, user }
   },
+
+  mounted() {
+    if (!this.user.LoggedIn) {
+      this.$router.push('/')
+    }
+  },
+  
   data() {
     return {
       services: [],
