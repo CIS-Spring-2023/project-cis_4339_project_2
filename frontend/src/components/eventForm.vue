@@ -1,13 +1,17 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   setup() {
-    return { v$: useVuelidate({ $autoDirty: true }) }
+    const user = loggedInUser();
+    return { v$: useVuelidate({ $autoDirty: true }),
+  user };
   },
+
   data() {
     return {
       // removed unnecessary extra array to track services
@@ -26,6 +30,13 @@ export default {
       }
     }
   },
+  mounted() {
+    if (!this.user.LoggedIn || this.user.role == 'read') {
+      this.$router.push("/")
+    };
+
+  },
+
   methods: {
     async handleSubmitForm() {
       // Checks to see if there are any errors in validation
