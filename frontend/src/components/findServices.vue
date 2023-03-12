@@ -137,6 +137,7 @@ export default {
             <tr>
               <th class="p-4 text-left">Service Name</th>
               <th class="p-4 text-left">Description</th>
+              <th class="p-4 text-left" v-if="user.role == 'write'"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-300">

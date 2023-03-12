@@ -5,12 +5,12 @@ export const servicesStore = defineStore({
   state: () => ({
     // Hardcoded a list of services with name and description properties
     services: [
-      { _id: '0', serviceName: 'Family Support', serviceDescription: 'Group-oriented Activites', active: true },
-      { _id: '1', serviceName: 'Adult Education', serviceDescription: 'Classes for Adults', active: true},
-      { _id: '2', serviceName: 'Youth Services Program', serviceDescription: 'Activities for Children', active: true},
-      { _id: '3', serviceName: 'Early Childhood Education', serviceDescription: 'Education for Toddlers', active: true},
+      { _id: 0, serviceName: 'Family Support', serviceDescription: 'Group-oriented Activites', active: true },
+      { _id: 1, serviceName: 'Adult Education', serviceDescription: 'Classes for Adults', active: true},
+      { _id: 2, serviceName: 'Youth Services Program', serviceDescription: 'Activities for Children', active: true},
+      { _id: 3, serviceName: 'Early Childhood Education', serviceDescription: 'Education for Toddlers', active: true},
     ],
-    increment: 3
+    increment: 4
   }),
   actions: {
     getServices(searchBy, serviceName, serviceDescription) {
@@ -24,12 +24,12 @@ export const servicesStore = defineStore({
     },
     updateService(id,service) {
       let services = this.services;
-      let index = services.findIndex((service) => service._id === id)
+      let index = services.findIndex((service) => service._id == id)
       this.services[index] = service
     },
     getService(id) {
       let services = this.services;
-      let service = services.find((service) => service._id === id)
+      let service = services.find((service) => service._id == id)
       return service;
     },
     addService(service) {
@@ -38,10 +38,13 @@ export const servicesStore = defineStore({
         this.services[s].active = true;
       }
       else {
-      this.services.push({_id: this.increment++,
+      this.services.push(
+        {_id: this.increment++,
         serviceName: service.serviceName,
         serviceDescription: service.serviceDescription,
-        active: true }) }
+        active: true }
+        )}
+        
     }
   }
 }
