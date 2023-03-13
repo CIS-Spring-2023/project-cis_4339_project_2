@@ -1,5 +1,4 @@
-import { defineStore } from 'pinia'
-
+import { defineStore } from 'pinia'  // Using Pinia state management to handle login activities
 
 export const loggedInUser = defineStore ({
     id: 'loggedInUser',
@@ -13,10 +12,10 @@ export const loggedInUser = defineStore ({
         }
     },
 
-    actions: {
-        async login(username, password) {
+    actions: {  
+        async login(username, password) { // Login function checks for proper credentials
             try {
-                const response = await userLogin(username, password);
+                const response = await userLogin(username, password); // The arguments are passed from the form in the login component
                 this.$patch({
                     LoggedIn: response.success,
                     name: response.name,
@@ -25,18 +24,18 @@ export const loggedInUser = defineStore ({
 
                 })
 
-                this.$router.push("/home");
+                this.$router.push("/home"); // if successful, push to the dashboard
             }
 
             catch(error) {
                 console.log(error)
                 this.$patch({
-                    loginErr: error
+                    loginErr: error  // Otherwise, set the error for display
                 })
             }
         },
 
-        logout() {
+        logout() {  // Simple logout function resets everything and pushes to login page
             this.$patch({
                 name: "",
                 role: "",
@@ -52,7 +51,7 @@ export const loggedInUser = defineStore ({
 
 
 
-function userLogin(u, p) {
+function userLogin(u, p) { // Promise-based login function checks entered credentials for validity
   if (u == "viewer" && p == "view") return Promise.resolve({success: true, name: 'Viewer', role: "read"});
   if (u == "editor" && p == "edit") return Promise.resolve({success: true, name: 'Editor', role: "write"});
   return Promise.reject(new Error("Invalid Credentials")); 

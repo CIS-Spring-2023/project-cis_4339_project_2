@@ -131,14 +131,16 @@ export default {
             <tr>
               <th class="p-4 text-left">Service Name</th>
               <th class="p-4 text-left">Description</th>
-              <th class="p-4 text-left" v-if="user.role == 'write'"></th>
+              <th class="p-4 text-left" v-if="user.role == 'write'"></th> <!-- conditional rendering of write-only table head -->
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-300">
+            <!-- The v-for calls the get function to dynamically render active services and return search results -->
             <tr
               v-for="service in getServices()"
               :key="service._id"
             >
+              <!-- the results are only editable if the user has proper permissions -->
               <td @click="user.role == 'write' ? {edit: editServices(service._id)} : {}" 
               class="p-2 text-left">
                 {{ service.serviceName }}
@@ -148,7 +150,7 @@ export default {
                 {{ service.serviceDescription }}
               </td>
 
-              <td v-if="user.role == 'write'">
+              <td v-if="user.role == 'write'"> <!-- delete button is only displayed with proper permissions -->
                 <button  @click="service.active = !service.active"
             class="bg-red-700 text-white rounded"
           >

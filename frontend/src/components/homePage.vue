@@ -102,7 +102,7 @@ export default {
             </tbody>
           </table>
           <div>
-            <piechart />
+            <piechart /> <!-- importing pie chart here -->
 
             <!-- Start of loading animation -->
             <div class="mt-40" v-if="loading">

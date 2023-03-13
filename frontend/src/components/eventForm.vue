@@ -35,7 +35,7 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted() {  // login controls for users missing permissions are included in the mounted statement
     if (!this.user.LoggedIn || this.user.role == 'read') {
       this.$router.push("/")
     };
@@ -152,6 +152,7 @@ export default {
           <!-- form field -->
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
+            <!-- dynamic rendering of active services is possible using a Pinia store -->
             <div v-for="service in store.services" :key="service._id">
               <div v-if="service.active">
               <label :for="service.serviceName" class="inline-flex items-center">

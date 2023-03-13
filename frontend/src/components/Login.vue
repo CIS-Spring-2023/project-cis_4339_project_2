@@ -19,32 +19,19 @@ export default {
             username: '',
             password: '',
 
-            msg: '',
-
-            users: [
-                {
-                    name: 'viewer',
-                    pw: 'view',
-                    role: 'read'
-                },
-                {
-                    name: 'editor',
-                    pw: 'edit',
-                    role: 'write'
-                }
-            ]
+            msg: ''
         }
     },
 
 
-    validations () {
+    validations () {  // Vuelidate constraints for form validation
         return {
             username: { required },
             password: { required }
         }
     },
 
-    methods: {
+    methods: {  // the submit function uses the login store function as a callback function post-validation
       submitLogin(f) {
         this.v$.$validate().then((valid) => {
           if (valid) {
@@ -62,8 +49,9 @@ export default {
 
 
 
-<template>
-          <form class="mt-8" @submit.prevent="submitLogin(store.login)">
+<template> <!-- Fairly simple login form starts here -->
+           <!-- to log in, use name and pw 'viewer' and 'view', or 'editor' and 'edit' -->
+          <form class="mt-8" @submit.prevent="submitLogin(store.login)"> <!-- Call to the Login method with callback -->
             <div class="mx-auto max-w-lg">
               <div class="py-2">
                 <span class="px-1 text-sm text-gray-600">Username</span>
@@ -76,7 +64,7 @@ export default {
                     v-for="error of v$.username.$errors"
                     :key="error.$uid"
                   >
-                    {{ error.$message }}!
+                    {{ error.$message }}! <!-- Validation errors will show here -->
                   </p>
                 </span>
               </div>
@@ -95,7 +83,7 @@ export default {
                     v-for="error of v$.password.$errors"
                     :key="error.$uid"
                   >
-                    {{ error.$message }}!
+                    {{ error.$message }}! <!-- Validation errors for password input shown here -->
                   </p>
                 </span>
                 </div>
@@ -106,7 +94,7 @@ export default {
                 px-6 py-3 block shadow-xl hover:text-white hover:bg-black" type="submit">
                 Login
               </button>
-              <span v-if="store.loginErr"> {{  store.loginErr }}! </span>
+              <span v-if="store.loginErr"> {{  store.loginErr }}! </span> <!-- Errors caught by the store login function will show here -->
             </div>
           </form>
 

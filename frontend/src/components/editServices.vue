@@ -5,6 +5,8 @@ import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn'
 const apiURL = import.meta.env.VITE_ROOT_API
 
+// service editing will use Pinia store for updates
+
 export default {
    props: ['id'],
    setup() {
@@ -34,7 +36,7 @@ export default {
   this.service = this.store.getService(serviceId)
   },
 
-  mounted() {
+  mounted() { // Login controls
     if (this.user.role != 'write') {
       this.$router.push('/')
     }
@@ -45,7 +47,7 @@ export default {
       // Checks to see if there are any errors in validation
       const isFormCorrect = await this.v$.$validate()
       // If no errors found. isFormCorrect = True then the form is submitted
-      if (isFormCorrect) {
+      if (isFormCorrect) { // Update CRUD method called upon successful form submission
         const serviceId = this.$route.params.id
         this.store.updateService(serviceId,this.service);
         this.$router.push({name:'findservices'})

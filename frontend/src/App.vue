@@ -7,6 +7,7 @@ export default {
   name: 'App',
 
   setup() {
+    // Will use the login store to conditonally render the navigation
     const user = loggedInUser();
     return { user };
   },
@@ -42,7 +43,7 @@ export default {
                   Dashboard
                 </router-link>
               </li>
-              <div v-if="user.LoggedIn">
+              <div v-if="user.LoggedIn"> <!-- Only rendering nav items beyond the dashboard if the user is logged in -->
               <li>
                 <router-link to="/findclient">
                   <span
@@ -118,7 +119,7 @@ export default {
                   </a>
               </li>
             </div>
-            <li v-if="!user.LoggedIn">
+            <li v-if="!user.LoggedIn"> <!-- Showing the login button if user is not logged in otherwise shows the logout button -->
               <router-link to="/">
                   <span
                     style="position: relative; top: 6px"
