@@ -1,24 +1,21 @@
 <script>
 import { DateTime } from 'luxon'
 import axios from 'axios'
-import AttendanceChart from './barChart.vue'
+import piechart from './piechart.vue'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   components: {
-    AttendanceChart
+    piechart
   },
   data() {
     return {
-      recentEvents: [],
-      labels: [],
-      chartData: [],
-      loading: false,
-      error: null
+      recentEvents: []
     }
   },
   mounted() {
-    this.getAttendanceData()
+    // commenting out this method call until the API is functional
+    // this.getAttendanceData()
   },
   methods: {
     async getAttendanceData() {
@@ -105,11 +102,7 @@ export default {
             </tbody>
           </table>
           <div>
-            <AttendanceChart
-              v-if="!loading && !error"
-              :label="labels"
-              :chart-data="chartData"
-            ></AttendanceChart>
+            <piechart />
 
             <!-- Start of loading animation -->
             <div class="mt-40" v-if="loading">

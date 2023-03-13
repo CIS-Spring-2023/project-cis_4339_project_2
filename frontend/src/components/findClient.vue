@@ -152,7 +152,6 @@ export default {
     >
       <div class="ml-10">
         <h2 class="text-2xl font-bold">List of Clients</h2>
-        <h3 class="italic">Click table row to edit/display an entry</h3>
       </div>
       <div class="flex flex-col col-span-2">
         <table class="min-w-full shadow-md rounded">
