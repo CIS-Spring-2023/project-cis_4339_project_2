@@ -111,13 +111,7 @@ export default {
           >
             Clear Search
           </button>
-          <button
-            class="bg-red-700 text-white rounded"
-            @click="handleSubmitForm"
-            type="submit"
-          >
-            Search Services
-          </button>
+
         </div>
       </div>
     </div>
@@ -129,7 +123,7 @@ export default {
     >
       <div class="ml-10">
         <h2 class="text-2xl font-bold">List of Services</h2>
-        <h3 class="italic">Click table row to edit/display an entry</h3>
+        <h3 class="italic" v-if="user.role == 'write'">Click table row to edit/display an entry</h3>
       </div>
       <div class="flex flex-col col-span-2">
         <table class="min-w-full shadow-md rounded">
