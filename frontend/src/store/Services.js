@@ -5,10 +5,12 @@ export const servicesStore = defineStore({
   state: () => ({
     // Hardcoded a list of services with name and description properties
     services: [
-      { _id: '0', serviceName: 'Service 1', serviceDescription: 'This is the first service' },
-      { _id: '1', serviceName: 'Service 2', serviceDescription: 'This is the second service' },
-      { _id: '2', serviceName: 'Service 3', serviceDescription: 'This is the third service' }
-    ]
+      { _id: 0, serviceName: 'Family Support', serviceDescription: 'Group-oriented Activites', active: true },
+      { _id: 1, serviceName: 'Adult Education', serviceDescription: 'Classes for Adults', active: true},
+      { _id: 2, serviceName: 'Youth Services Program', serviceDescription: 'Activities for Children', active: true},
+      { _id: 3, serviceName: 'Early Childhood Education', serviceDescription: 'Education for Toddlers', active: true},
+    ],
+    increment: 4
   }),
   actions: {
     getServices(searchBy, serviceName, serviceDescription) {
@@ -18,17 +20,31 @@ export const servicesStore = defineStore({
       } else if (searchBy === 'Services Description') {
         services = services.filter((service) => service.serviceDescription.includes(serviceDescription));
       }
-      return services;
+      return services.filter((s) => s.active);
     },
     updateService(id,service) {
       let services = this.services;
-      let index = services.findIndex((service) => service._id === id)
+      let index = services.findIndex((service) => service._id == id)
       this.services[index] = service
     },
     getService(id) {
       let services = this.services;
-      let service = services.find((service) => service._id === id)
+      let service = services.find((service) => service._id == id)
       return service;
+    },
+    addService(service) {
+      let s = this.services.findIndex((serv) => serv.serviceName == service.serviceName)
+      if (s != -1){
+        this.services[s].active = true;
+      }
+      else {
+      this.services.push(
+        {_id: this.increment++,
+        serviceName: service.serviceName,
+        serviceDescription: service.serviceDescription,
+        active: true }
+        )}
+        
     }
   }
 }

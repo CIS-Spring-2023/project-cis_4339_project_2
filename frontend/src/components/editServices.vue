@@ -2,17 +2,21 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import {servicesStore} from '../store/Services'
+import { loggedInUser } from '../store/LoggedIn'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
    props: ['id'],
    setup() {
     const store = servicesStore()
+    const user = loggedInUser()
     return {
         v$: useVuelidate({ $autoDirty: true}),
-        store
+        store,
+        user
     }
   },
+  
   data() {
     return {
       // removed unnecessary extra array to track services
@@ -25,10 +29,15 @@ export default {
     }
   },
   created() {
+
   const serviceId = this.$route.params.id;
   this.service = this.store.getService(serviceId)
   },
+
   mounted() {
+    if (this.user.role != 'write') {
+      this.$router.push('/')
+    }
     window.scrollTo(0, 0)
   },
   methods: {

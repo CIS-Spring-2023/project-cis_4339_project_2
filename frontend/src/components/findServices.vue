@@ -2,12 +2,20 @@
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 import {servicesStore} from '../store/Services'
-
+import { loggedInUser } from '../store/LoggedIn'
 export default {
   setup() {
     const store = servicesStore()
-    return { store }
+    const user = loggedInUser()
+    return { store, user }
   },
+
+  mounted() {
+    if (!this.user.LoggedIn) {
+      this.$router.push('/')
+    }
+  },
+  
   data() {
     return {
       services: [],
@@ -17,9 +25,7 @@ export default {
       serviceDescription: ''
     }
   },
-  created() {
-    this.services = this.store.getServices();
-  },
+
   methods: {
     handleSubmitForm() {
       this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
@@ -27,7 +33,8 @@ export default {
     },
     // abstract get Servicess call
     getServices() {
-      this.services = this.store.getServices();
+      this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
+      return this.services;
       window.scrollTo(0, 0)
     },
     clearSearch() {
@@ -130,19 +137,29 @@ export default {
             <tr>
               <th class="p-4 text-left">Service Name</th>
               <th class="p-4 text-left">Description</th>
+              <th class="p-4 text-left" v-if="user.role == 'write'"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editServices(service._id)"
-              v-for="service in services"
+              v-for="service in getServices()"
               :key="service._id"
             >
-              <td class="p-2 text-left">
+              <td @click="user.role == 'write' ? {edit: editServices(service._id)} : {}" 
+              class="p-2 text-left">
                 {{ service.serviceName }}
               </td>
-              <td class="p-2 text-left">
+              <td @click="user.role == 'write' ? {edit: editServices(service._id)} : {}" 
+              class="p-2 text-left">
                 {{ service.serviceDescription }}
+              </td>
+
+              <td v-if="user.role == 'write'">
+                <button  @click="service.active = !service.active"
+            class="bg-red-700 text-white rounded"
+          >
+            Delete
+          </button>
               </td>
             </tr>
           </tbody>
