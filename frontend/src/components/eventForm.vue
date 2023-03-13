@@ -35,6 +35,13 @@ export default {
       }
     }
   },
+  mounted() {
+    if (!this.user.LoggedIn || this.user.role == 'read') {
+      this.$router.push("/")
+    };
+
+  },
+
   methods: {
     async handleSubmitForm() {
       // Checks to see if there are any errors in validation

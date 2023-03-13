@@ -1,8 +1,14 @@
 <script>
 import axios from 'axios'
+import { loggedInUser } from '../store/LoggedIn.js'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
+  setup() {
+    const user = loggedInUser();
+    return { user }
+  },
+
   data() {
     return {
       queryData: [],
@@ -16,6 +22,13 @@ export default {
   created() {
     this.getClients()
   },
+
+  mounted() {
+    if (!this.user.LoggedIn) {
+      this.$router.push("/")
+    }
+  },
+  
   methods: {
     handleSubmitForm() {
       let endpoint = ''
