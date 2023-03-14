@@ -22,6 +22,14 @@ cd frontend
 ```
 Follow instructions in frontend README for setup and running as a local instance.
 
+## Credentials
+The credentials are the following and follow username:password format.
+```
+editor:edit
+viewer:view
+
+```
+
 
 ## References
 - https://www.chartjs.org/docs/latest/
@@ -32,3 +40,6 @@ Follow instructions in frontend README for setup and running as a local instance
 - https://masteringjs.io/tutorials/fundamentals/foreach-break
 - https://vuelidate-next.netlify.app/guide.html#validating-forms-before-submitting
 - https://stackoverflow.com/questions/48042274/conditional-event-binding-vuejs
+- https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/array/find
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+- https://vuejs.org/guide/essentials/forms.html#multiline-text
