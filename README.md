@@ -31,6 +31,7 @@ viewer:view
 
 
 ## References
+- https://vuejs.org/tutorial/#step-1
 - https://www.chartjs.org/docs/latest/
 - https://tailwindcomponents.com/component/login-showhide-password - template for login page
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
