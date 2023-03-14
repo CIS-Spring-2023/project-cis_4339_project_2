@@ -27,7 +27,6 @@ The credentials are the following and follow username:password format.
 ```
 editor:edit
 viewer:view
-
 ```
 
 
