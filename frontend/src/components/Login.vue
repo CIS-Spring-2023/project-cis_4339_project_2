@@ -2,7 +2,6 @@
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { loggedInUser } from '../store/LoggedIn'
-const apiURL = import.meta.env.VITE_ROOT_API
 
 
 export default {

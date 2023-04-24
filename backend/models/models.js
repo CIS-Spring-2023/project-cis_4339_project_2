@@ -6,8 +6,7 @@ const Schema = mongoose.Schema
 const orgDataSchema = new Schema(
   {
     _id: {
-      type: String,
-      required: true
+      type: String
     },
     name: {
       type: String,
@@ -16,6 +15,18 @@ const orgDataSchema = new Schema(
   },
   {
     collection: 'org'
+  }
+)
+// collection for users
+const userDataSchema = new Schema(
+  {
+    _id: {type: String, default: uuid.v1 },
+    username: {type: String, required: true},
+    password: {type: String, required: true},
+    role: {type: String, required: true}
+  },
+  {
+    collection: 'user'
   }
 )
 
@@ -133,6 +144,7 @@ const eventDataSchema = new Schema(
 const clients = mongoose.model('client', clientDataSchema)
 const orgs = mongoose.model('org', orgDataSchema)
 const events = mongoose.model('event', eventDataSchema)
+const users = mongoose.model('user', userDataSchema)
 
 // package the models in an object to export
-module.exports = { clients, orgs, events }
+module.exports = { clients, orgs, events, users }

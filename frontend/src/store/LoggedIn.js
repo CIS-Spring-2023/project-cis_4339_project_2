@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia'  // Using Pinia state management to handle login activities
+import axios from 'axios';
+
+const apiURL = 'http://localhost:3000'
 
 export const loggedInUser = defineStore ({
     id: 'loggedInUser',
@@ -15,11 +18,13 @@ export const loggedInUser = defineStore ({
     actions: {  
         async login(username, password) { // Login function checks for proper credentials
             try {
-                const response = await userLogin(username, password); // The arguments are passed from the form in the login component
+                console.log(apiURL)
+                const response = await axios.get(`${apiURL}/users/login/${username}/${password}`); // The arguments are passed to the login route
+                console.log(response);
                 this.$patch({
-                    LoggedIn: response.success,
-                    name: response.name,
-                    role: response.role,
+                    LoggedIn: true,
+                    name: response.data.username,
+                    role: response.data.role,
                     loginErr: null
 
                 })
@@ -50,9 +55,11 @@ export const loggedInUser = defineStore ({
 });
 
 
-
+/*
 function userLogin(u, p) { // Promise-based login function checks entered credentials for validity
   if (u == "viewer" && p == "view") return Promise.resolve({success: true, name: 'Viewer', role: "read"});
   if (u == "editor" && p == "edit") return Promise.resolve({success: true, name: 'Editor', role: "write"});
   return Promise.reject(new Error("Invalid Credentials")); 
 }
+
+*/
