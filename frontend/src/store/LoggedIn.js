@@ -18,9 +18,14 @@ export const loggedInUser = defineStore ({
     actions: {  
         async login(username, password) { // Login function checks for proper credentials
             try {
-                console.log(apiURL)
                 const response = await axios.get(`${apiURL}/users/login/${username}/${password}`); // The arguments are passed to the login route
-                console.log(response);
+                console.log(response)
+                if (response.data == "Invalid Credentials") {
+                    this.$patch({
+                        loginErr: response.data
+                    })
+                }
+                else {
                 this.$patch({
                     LoggedIn: true,
                     name: response.data.username,
@@ -28,8 +33,9 @@ export const loggedInUser = defineStore ({
                     loginErr: null
 
                 })
-
                 this.$router.push("/home"); // if successful, push to the dashboard
+
+                }
             }
 
             catch(error) {

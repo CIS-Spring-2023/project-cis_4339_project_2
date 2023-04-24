@@ -16,7 +16,7 @@ router.get('/login/:name/:pw', (req, res) => {
             res.json(user);
         }
         else {
-            throw new Error("Invalid Credentials");
+            res.send("Invalid Credentials");
         }
     })
 })
