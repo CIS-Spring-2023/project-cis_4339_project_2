@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'  // Using Pinia state management to handle login activities
 import axios from 'axios';
 
-const apiURL = 'http://localhost:3000'
+const apiURL = import.meta.env.VITE_ROOT_API
 
 export const loggedInUser = defineStore ({
     id: 'loggedInUser',
