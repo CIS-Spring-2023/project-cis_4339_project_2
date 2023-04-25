@@ -150,12 +150,12 @@ const serviceDataSchema = new Schema(
       type: String,
       required: true
     },
-    serviceDescription: [
+    serviceDescription: 
       {
         type: String,
         required: true
       }
-    ],
+    ,
     active: {
       type: Boolean,
       required: true
