@@ -32,8 +32,16 @@ export default {
           zip: ''
         },
         description: ''
-      }
+      },
+      dbservices: []
     }
+  },
+
+  created() {
+    axios.get(`${apiURL}/services/`).then((res) => {
+      this.dbservices = res.data;
+    })
+
   },
   mounted() {  // login controls for users missing permissions are included in the mounted statement
     if (!this.user.LoggedIn || this.user.role == 'read') {
@@ -153,13 +161,13 @@ export default {
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
             <!-- dynamic rendering of active services is possible using a Pinia store -->
-            <div v-for="service in store.services" :key="service._id">
+            <div v-for="service in dbservices" :key="service._id">
               <div v-if="service.active">
               <label :for="service.serviceName" class="inline-flex items-center">
                 <input
                   type="checkbox"
                   :id="service.serviceName"
-                  :value="service"
+                  :value="service.serviceName"
                   v-model="event.services"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
                   notchecked

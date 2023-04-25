@@ -3,6 +3,7 @@ import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn'
+import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
@@ -39,9 +40,9 @@ mounted() {
       const isFormCorrect = await this.v$.$validate()
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
-        this.store.addService(this.service);
-        this.$router.push({name:'findservices'})
-
+        axios.post(`${apiURL}/services/add/${this.service.serviceName}/${this.service.serviceDescription}`).then(() => {
+          this.$router.push({name:'findservices'})
+        })  
       }
     }
   },

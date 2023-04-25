@@ -40,12 +40,12 @@ router.get('/search', (req, res, next) => {
 })
 
 //post method to add a service name and service description
-router.post('/add/', (req, res) => {
+router.post('/add/:serviceName/:serviceDescription', (req, res) => {
   //Sends an error back if the add api fails
   try {
     services.create({
-      serviceName: req.body.serviceName,
-      serviceDescription: req.body.serviceDescription,
+      serviceName: req.params.serviceName,
+      serviceDescription: req.params.serviceDescription,
       active: true,
       org: org
     })
