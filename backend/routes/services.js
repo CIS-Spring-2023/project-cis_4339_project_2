@@ -1,0 +1,115 @@
+const express = require('express')
+const router = express.Router()
+
+const org = process.env.ORG
+const { services } = require('../models/models')
+//Get api to show the 10 services.  Only shows services that have active as true
+router.get('/', (req, res, next) => {
+  services
+    .find({ org: org,active:true }, (error, data) => {
+      if (error) {
+        return next(error)
+      } else {
+        return res.json(data)
+      }
+    })
+    .limit(10)
+})
+//post method to add a service name and service description
+router.post('/add/', (req, res) => {
+  //Sends an error back if the add api fails
+  try {
+    services.create({
+      serviceName: req.body.serviceName,
+      serviceDescription: req.body.serviceDescription,
+      active: true,
+      org: org
+    })
+    res.send('Added service successfully')
+  } catch (error) {
+    res.send("An error occurred")
+  }
+})
+
+//update method to update current services if provided id
+router.put('/update/:id', (req, res, next) => {
+  try {
+    services.findByIdAndUpdate(req.params.id,
+      req.body,{new:true},
+      (error, data) => {
+        if (error) {
+          return next(error)
+        }
+        else
+          res.json(data)
+      }
+    )
+  }
+  catch (error) {
+    res.send("An error occurred")
+  }
+})
+//Soft deletes an entry based on given id
+router.delete('/delete/:id', (req, res, next) => {
+  try {
+    const service = req.body;
+    service.active = false;
+    services.findByIdAndUpdate(req.params.id,
+      service,{new:true},
+      (error, data) => {
+        if (error) {
+          return next(error)
+        }
+        else
+          res.json(data)
+      }
+    )
+  }
+  catch (error) {
+    res.send("An error occurred")
+  }
+})
+
+module.exports = router
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
