@@ -12,8 +12,9 @@ Chart.register(...registerables);
 export default {
   data () {
     return {
-      label: ['77063', '77356', '77777', '10101', '73571', '77061'], //data label
-      chartData: [15, 10, 27, 5, 13, 3]                              //data
+      label: ['77063', '77356', '77097', '77016', '77090', '77061', '77005',
+              '77081', '77021', '77213', '77494'], // data labels
+      chartData: [15, 10, 27, 5, 13, 3, 4, 8, 12, 5, 7]  // data
     }
   },
   async mounted() {
@@ -27,7 +28,7 @@ export default {
         labels: this.label,
         datasets: [
           {
-            label: '# of clients',
+            label: 'Clients',
             data: this.chartData,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
