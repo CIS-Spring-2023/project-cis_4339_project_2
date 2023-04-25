@@ -49,7 +49,7 @@ export default {
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
         axios
-          .post(`${apiURL}/events`, this.event)
+          .post(`${apiURL}/events/`, this.event)
           .then(() => {
             alert('Event has been added.')
             this.$router.push({ name: 'findevents' })

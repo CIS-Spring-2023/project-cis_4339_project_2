@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'  // Using Pinia state management to handle login activities
 import axios from 'axios';
 
-const apiURL = 'http://localhost:3000'
+const apiURL = import.meta.env.VITE_ROOT_API
 
 export const loggedInUser = defineStore ({
     id: 'loggedInUser',
@@ -20,7 +20,13 @@ export const loggedInUser = defineStore ({
             try {
                 console.log(apiURL)
                 const response = await axios.get(`${apiURL}/users/login/${username}/${password}`); // The arguments are passed to the login route
-                console.log(response);
+                console.log(response)
+                if (response.data == "Invalid Credentials") {
+                    this.$patch({
+                        loginErr: response.data
+                    })
+                }
+                else {
                 this.$patch({
                     LoggedIn: true,
                     name: response.data.username,
@@ -28,8 +34,9 @@ export const loggedInUser = defineStore ({
                     loginErr: null
 
                 })
-
                 this.$router.push("/home"); // if successful, push to the dashboard
+
+                }
             }
 
             catch(error) {

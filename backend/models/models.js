@@ -72,7 +72,8 @@ const clientDataSchema = new Schema(
         type: String
       },
       zip: {
-        type: String
+        type: String,
+        required: true
       }
     },
     orgs: {
