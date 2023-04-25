@@ -10,6 +10,10 @@ export default {
     return { store, user }
   },
 
+  created() {
+    this.getServices()
+  },
+
   mounted() {
     if (!this.user.LoggedIn) {
       this.$router.push('/')
@@ -28,13 +32,23 @@ export default {
 
   methods: {
     handleSubmitForm() {
-      this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
+      let endpoint = ''
+      if (this.searchBy === "Service Name") {
+        endpoint = `services/search?serviceName=${this.serviceName}&searchBy=name`
+      } else if (this.searchBy === "Service Description") {
+        endpoint = `services/search?serviceDescription=${this.serviceDescription}&searchBy=desc`
+      }
+      axios.get(`${apiURL}/${endpoint}`).then((res) => {
+        this.services = res.data
+      })
 
     },
     // abstract get Servicess call
     getServices() {
-      this.services = this.store.getServices(this.searchBy, this.serviceName, this.serviceDescription);
-      return this.services;
+      axios.get(`${apiURL}/services/`).then((res) => {
+        this.services = res.data
+      })
+
       window.scrollTo(0, 0)
     },
     clearSearch() {
@@ -48,6 +62,12 @@ export default {
     },
     editServices(ServicesID) {
       this.$router.push({ name: 'editServices', params: { id: ServicesID } })
+    },
+
+    deleteService(id, service) {
+      axios.delete(`${apiURL}/services/delete/${id}`, {data: service}).then(() =>{
+        this.getServices()
+      })
     }
   }
 }
@@ -73,7 +93,7 @@ export default {
             v-model="searchBy"
           >
             <option value="Service Name">Service Name</option>
-            <option value="Services Description">Services Description</option>
+            <option value="Service Description">Services Description</option>
           </select>
         </div>
         <div class="flex flex-col" v-if="searchBy === 'Service Name'">
@@ -88,13 +108,13 @@ export default {
           </label>
         </div>
         <!-- Displays Services Number search field -->
-        <div class="flex flex-col" v-if="searchBy === 'Services Description'">
+        <div class="flex flex-col" v-if="searchBy === 'Service Description'">
           <input
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             type="text"
             v-model="serviceDescription"
             v-on:keyup.enter="handleSubmitForm"
-            placeholder="Search Services description"
+            placeholder="Enter Service description"
           />
         </div>
       </div>
@@ -111,7 +131,13 @@ export default {
           >
             Clear Search
           </button>
-
+          <button
+            class="bg-red-700 text-white rounded"
+            @click="handleSubmitForm"
+            type="submit"
+          >
+            Search Service
+          </button>
         </div>
       </div>
     </div>
@@ -137,7 +163,7 @@ export default {
           <tbody class="divide-y divide-gray-300">
             <!-- The v-for calls the get function to dynamically render active services and return search results -->
             <tr
-              v-for="service in getServices()"
+              v-for="service in services"
               :key="service._id"
             >
               <!-- the results are only editable if the user has proper permissions -->
@@ -151,7 +177,7 @@ export default {
               </td>
 
               <td v-if="user.role == 'write'"> <!-- delete button is only displayed with proper permissions -->
-                <button  @click="service.active = !service.active"
+                <button  @click="deleteService(service._id, service)"
             class="bg-red-700 text-white rounded"
           >
             Delete

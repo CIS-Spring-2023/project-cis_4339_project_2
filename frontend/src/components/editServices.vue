@@ -48,9 +48,11 @@ export default {
       const isFormCorrect = await this.v$.$validate()
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) { // Update CRUD method called upon successful form submission
-        const serviceId = this.$route.params.id
-        this.store.updateService(serviceId,this.service);
-        this.$router.push({name:'findservices'})
+
+        const serviceId = this.$route.params.id;
+        axios.post(`${apiURL}/services/update/${serviceId}`).then(() => {
+          this.$router.push({name:'findservices'})
+        })
 
       }
     }

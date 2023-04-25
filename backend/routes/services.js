@@ -13,8 +13,32 @@ router.get('/', (req, res, next) => {
         return res.json(data)
       }
     })
-    .limit(10)
 })
+// Get to allow filtering of services
+router.get('/search', (req, res, next) => {
+  const dbQuery = { orgs: org }
+  switch (req.query.searchBy) {
+    case 'name':
+      dbQuery.serviceName = { $regex: `^${req.query.serviceName}`, $options: 'i' }
+      break
+    case 'desc':
+      dbQuery.serviceDescription = {
+        $regex: `^${req.query.serviceDescription}`,
+        $options: 'i'
+      }
+      break
+    default:
+      return res.status(400).send('invalid searchBy')
+  }
+  services.find(dbQuery, (error, data) => {
+    if (error) {
+      return next(error)
+    } else {
+      res.json(data)
+    }
+  })
+})
+
 //post method to add a service name and service description
 router.post('/add/', (req, res) => {
   //Sends an error back if the add api fails
