@@ -10,11 +10,12 @@ import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables);
 
 export default {
-  data () {
-    return {
-      label: ['77063', '77356', '77097', '77016', '77090', '77061', '77005',
-              '77081', '77021', '77213', '77494'], // data labels
-      chartData: [15, 10, 27, 5, 13, 3, 4, 8, 12, 5, 7]  // data
+  props: {
+    label: {
+      type: Array
+    },
+    chartData: {
+      type: Array
     }
   },
   async mounted() {
