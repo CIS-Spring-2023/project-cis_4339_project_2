@@ -18,6 +18,7 @@ export const loggedInUser = defineStore ({
     actions: {  
         async login(username, password) { // Login function checks for proper credentials
             try {
+                console.log(apiURL)
                 const response = await axios.get(`${apiURL}/users/login/${username}/${password}`); // The arguments are passed to the login route
                 console.log(response)
                 if (response.data == "Invalid Credentials") {
