@@ -66,6 +66,8 @@ router.get('/zips', (req, res) => {
 
 clients.aggregate([
   // Only match clients belonging to current org
+  {$unwind: '$orgs'},
+
   { $match: { orgs: org } },
 
   // Group by zip code and count the number of clients in each group
