@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { loggedInUser } from '../store/LoggedIn'
@@ -28,8 +29,10 @@ export default {
     }
   },
   created() {
-  const serviceId = this.$route.params.id;
-  this.service = {};
+    const serviceId = this.$route.params.id;
+    axios.get(`${apiURL}/services/${serviceId}`).then((res) => {
+      this.service = res.data
+    })
   },
 
   mounted() { // Login controls
@@ -46,7 +49,7 @@ export default {
       if (isFormCorrect) { // Update CRUD method called upon successful form submission
 
         const serviceId = this.$route.params.id;
-        axios.post(`${apiURL}/services/update/${serviceId}`).then(() => {
+        axios.put(`${apiURL}/services/update/${serviceId}`, this.service).then(() => {
           this.$router.push({name:'findservices'})
         })
 
