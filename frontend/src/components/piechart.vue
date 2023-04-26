@@ -1,9 +1,3 @@
-<template>
-  <div class="shadow-lg rounded-lg overflow-hidden">
-    <canvas class="p-20" ref="piechart"></canvas>
-  </div>
-</template>
-
 <script>
 // using chart.js library for the pie chart
 import { Chart, registerables } from 'chart.js'
@@ -20,7 +14,7 @@ export default {
   },
   async mounted() {
     // Random choosing of background and border colors
-    const backgroundColor = this.chartData.map(() => this.getColor())
+    const backgroundColor = this.chartData2.map(() => this.getColor())
     const borderColor = backgroundColor.map((e) =>
       e.replace(/[\d\.]+\)$/g, '1)')
     )
@@ -67,3 +61,9 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div class="shadow-lg rounded-lg overflow-hidden">
+    <canvas class="p-20" ref="piechart"></canvas>
+  </div>
+</template>

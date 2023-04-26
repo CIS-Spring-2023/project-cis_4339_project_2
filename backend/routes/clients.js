@@ -61,6 +61,28 @@ router.get('/search', (req, res, next) => {
   })
 })
 
+// GET to aggregate zip code information for pie chart
+router.get('/zips', (req, res) => {
+
+clients.aggregate([
+  // Only match clients belonging to current org
+  { $match: { orgs: org } },
+
+  // Group by zip code and count the number of clients in each group
+  { $group: { _id: '$address.zip', count: { $sum: 1 } } },
+
+  // Project the results to include only the zip code and count fields
+  { $project: { _id: 0, zip: '$_id', count: 1 } }
+], (error, data) => {
+    if (error) {
+      return next(error)
+    }
+    else {
+      res.json(data)
+    }
+  })
+})
+
 // GET lookup by phone, verify org membership on frontend
 router.get('/lookup/:phoneNumber', (req, res, next) => {
   clients.findOne(

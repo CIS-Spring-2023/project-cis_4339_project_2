@@ -2,7 +2,7 @@
 <script>
 import { DateTime } from 'luxon'
 import axios from 'axios'
-import AttendanceChart from './barChart.vue'
+import AttendanceChart from './barchart.vue'
 import piechart from './piechart.vue'
 const apiURL = import.meta.env.VITE_ROOT_API
 export default {
@@ -14,13 +14,17 @@ export default {
     return {
       recentEvents: [],
       labels: [],
+      pieLabels: [],
       chartData: [],
+      pieData: [],
       chartData2: [],
       loading: false,
-      error: null
+      error: null,
+      pieLoading: false,
+      pieError: null
     }
   },
-  mounted() {
+  created() {
     this.getAttendanceData(), this.getPiechartData()
   },
   methods: {
@@ -67,44 +71,36 @@ export default {
     },
     async getPiechartData() {
       try {
-        this.error = null
-        this.loading = true
-        const response = await axios.get(`${apiURL}/clients`)
-        const dataByZip = response.data;
-        const dataMap = new Map();
-        dataByZip.forEach(clients => {
-          if (!dataMap.has(clients.address.zip)) {
-            dataMap.set(clients.address.zip, 1);
-          } else {
-            dataMap.set(clients.address.zip, dataMap.get(clients.address.zip) + 1);
-          }
-        });
-        this.chartData2 = Array.from(dataMap, ([zip, count]) => ({
-          label: zip,
-          value: count,
-        }))
+        this.pieError = null
+        this.pieLoading = true
+        const response = await axios.get(`${apiURL}/clients/zips`)
+        const res = response.data;
+        this.pieLabels = res.map((c) => c.zip);
+        this.pieData = res.map((c) => c.count);
+        console.log(this.pieLabels)
+        console.log(this.pieData)
       } catch (err) {
         if (err.response) {
           // client received an error response (5xx, 4xx)
-          this.error = {
+          this.pieError = {
             title: 'Server Response',
             message: err.message
           }
         } else if (err.request) {
           // client never received a response, or request never left
-          this.error = {
+          this.pieError = {
             title: 'Unable to Reach Server',
             message: err.message
           }
         } else {
           // There's probably an error in your code
-          this.error = {
+          this.pieError = {
             title: 'Application Error',
             message: err.message
           }
         }
       }
-      this.loading = false
+      this.pieLoading = false
     },
 
       },
@@ -182,9 +178,9 @@ export default {
 
             <div>
             <piechart
-              v-if="!loading && !error"
-              :label="labels"
-              :chart-data="chartData"
+              v-if="!pieLoading && !pieError"
+              :label="pieLabels"
+              :chartData2="pieData"
             ></piechart>
 
           
