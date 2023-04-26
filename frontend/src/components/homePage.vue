@@ -1,21 +1,31 @@
+
 <script>
 import { DateTime } from 'luxon'
 import axios from 'axios'
+import AttendanceChart from './barchart.vue'
 import piechart from './piechart.vue'
 const apiURL = import.meta.env.VITE_ROOT_API
-
 export default {
   components: {
+    AttendanceChart,
     piechart
   },
   data() {
     return {
-      recentEvents: []
+      recentEvents: [],
+      labels: [],
+      pieLabels: [],
+      chartData: [],
+      pieData: [],
+      chartData2: [],
+      loading: false,
+      error: null,
+      pieLoading: false,
+      pieError: null
     }
   },
-  mounted() {
-    // commenting out this method call until the API is functional
-    // this.getAttendanceData()
+  created() {
+    this.getAttendanceData(), this.getPiechartData()
   },
   methods: {
     async getAttendanceData() {
@@ -59,12 +69,46 @@ export default {
         .setZone(DateTime.now().zoneName, { keepLocalTime: true })
         .toLocaleString()
     },
+    async getPiechartData() {
+      try {
+        this.pieError = null
+        this.pieLoading = true
+        const response = await axios.get(`${apiURL}/clients/zips`)
+        const res = response.data;
+        this.pieLabels = res.map((c) => c.zip);
+        this.pieData = res.map((c) => c.count);
+        console.log(this.pieLabels)
+        console.log(this.pieData)
+      } catch (err) {
+        if (err.response) {
+          // client received an error response (5xx, 4xx)
+          this.pieError = {
+            title: 'Server Response',
+            message: err.message
+          }
+        } else if (err.request) {
+          // client never received a response, or request never left
+          this.pieError = {
+            title: 'Unable to Reach Server',
+            message: err.message
+          }
+        } else {
+          // There's probably an error in your code
+          this.pieError = {
+            title: 'Application Error',
+            message: err.message
+          }
+        }
+      }
+      this.pieLoading = false
+    },
+
+      },
     // method to allow click through table to event details
     editEvent(eventID) {
       this.$router.push({ name: 'eventdetails', params: { id: eventID } })
     }
   }
-}
 </script>
 
 <template>
@@ -102,7 +146,44 @@ export default {
             </tbody>
           </table>
           <div>
-            <piechart /> <!-- importing pie chart here -->
+            <AttendanceChart
+              v-if="!loading && !error"
+              :label="labels"
+              :chart-data="chartData"
+            ></AttendanceChart>
+
+          
+
+            <!-- Start of loading animation -->
+            <div class="mt-40" v-if="loading">
+              <p
+                class="text-6xl font-bold text-center text-gray-500 animate-pulse"
+              >
+                Loading...
+              </p>
+            </div>
+            <!-- End of loading animation -->
+
+            <!-- Start of error alert -->
+            <div class="mt-12 bg-red-50" v-if="error">
+              <h3 class="px-4 py-1 text-4xl font-bold text-white bg-red-800">
+                {{ error.title }}
+              </h3>
+              <p class="p-4 text-lg font-bold text-red-900">
+                {{ error.message }}
+              </p>
+            </div>
+            <!-- End of error alert -->
+          </div>
+
+            <div>
+            <piechart
+              v-if="!pieLoading && !pieError"
+              :label="pieLabels"
+              :chartData2="pieData"
+            ></piechart>
+
+          
 
             <!-- Start of loading animation -->
             <div class="mt-40" v-if="loading">
@@ -128,5 +209,6 @@ export default {
         </div>
       </div>
     </div>
+
   </main>
 </template>

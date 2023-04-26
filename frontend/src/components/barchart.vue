@@ -1,51 +1,49 @@
 <script>
-// using chart.js library for the pie chart
 import { Chart, registerables } from 'chart.js'
-Chart.register(...registerables);
-
+Chart.register(...registerables)
 export default {
   props: {
     label: {
       type: Array
     },
-    chartData2: {
+    chartData: {
       type: Array
     }
   },
   async mounted() {
-    // Random choosing of background and border colors
-    const backgroundColor = this.chartData2.map(() => this.getColor())
+    const backgroundColor = this.chartData.map(() => this.getColor())
     const borderColor = backgroundColor.map((e) =>
       e.replace(/[\d\.]+\)$/g, '1)')
     )
-    await new Chart(this.$refs.piechart, {
-      type: 'pie',
+    await new Chart(this.$refs.attendanceChart, {
+      type: 'bar',
       data: {
         labels: this.label,
         datasets: [
           {
-            label: 'Clients',
-            data: this.chartData2,
+            borderWidth: 1,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
-            
+            data: this.chartData
           }
         ]
       },
       options: {
-        
+        scales: {
+          y: {
+            ticks: {
+              stepSize: 1
+            }
+          },
+          x: {
+            gridLines: {
+              display: false
+            }
+          }
+        },
         plugins: {
           legend: {
-            display: true, 
-               // Choosing to display the legend
-        
-          },
-          title: { // Title with increased size set here
-            display: true,
-            text: 'Clients by Zip Code',
-            font: {
-              size: 20
-            }
+            display: false
           }
         },
         responsive: true,
@@ -61,9 +59,8 @@ export default {
   }
 }
 </script>
-
 <template>
   <div class="shadow-lg rounded-lg overflow-hidden">
-    <canvas class="p-20" ref="piechart"></canvas>
+    <canvas class="p-10" ref="attendanceChart"></canvas>
   </div>
 </template>

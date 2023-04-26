@@ -33,7 +33,6 @@ const userDataSchema = new Schema(
 // collection for clients
 const clientDataSchema = new Schema(
   {
-    _id: { type: mongoose.ObjectId, default: uuid.v1 },
     firstName: {
       type: String,
       required: true
