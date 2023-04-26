@@ -29,6 +29,23 @@ editor:edit
 viewer:view
 ```
 
+## Environment Variables
+Two .env files should be used to properly run this application. One should be placed in the frontend directory and contain this variable:
+VITE_ROOT_API = "http://localhost:3000"
+
+Another .env file should be placed in the backend directory and contain:
+MONGO_URL = mongodb+srv://kgromana:KTAProj39@4339-kta.rr5t7uz.mongodb.net/dataplatform?retryWrites=true&w=majority
+PORT = 3000
+ORG = 'communitygarden'
+
+Change the value of ORG to access data for another organization. The data currently in the database contains information for:
+communitygarden
+waterfront
+municipal
+
+Please be sure that the port assigned to PORT and the port found in the VITE_ROOT_API string match, or you may experience errors.
+
+
 
 ## References
 - https://vuejs.org/tutorial/#step-1
