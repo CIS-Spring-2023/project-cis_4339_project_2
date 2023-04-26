@@ -1,18 +1,15 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   setup() {
-    const store = servicesStore()
     const user = loggedInUser()
     return {
         v$: useVuelidate({ $autoDirty: true}),
-        store,
         user
   }
 },

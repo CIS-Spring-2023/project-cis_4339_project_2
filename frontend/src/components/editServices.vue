@@ -1,7 +1,7 @@
 <script>
+import axios from 'axios'
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn'
 const apiURL = import.meta.env.VITE_ROOT_API
 
@@ -10,11 +10,9 @@ const apiURL = import.meta.env.VITE_ROOT_API
 export default {
    props: ['id'],
    setup() {
-    const store = servicesStore()
     const user = loggedInUser()
     return {
         v$: useVuelidate({ $autoDirty: true}),
-        store,
         user
     }
   },
@@ -31,9 +29,10 @@ export default {
     }
   },
   created() {
-
-  const serviceId = this.$route.params.id;
-  this.service = this.store.getService(serviceId)
+    const serviceId = this.$route.params.id;
+    axios.get(`${apiURL}/services/${serviceId}`).then((res) => {
+      this.service = res.data
+    })
   },
 
   mounted() { // Login controls
@@ -50,7 +49,7 @@ export default {
       if (isFormCorrect) { // Update CRUD method called upon successful form submission
 
         const serviceId = this.$route.params.id;
-        axios.post(`${apiURL}/services/update/${serviceId}`).then(() => {
+        axios.put(`${apiURL}/services/update/${serviceId}`, this.service).then(() => {
           this.$router.push({name:'findservices'})
         })
 

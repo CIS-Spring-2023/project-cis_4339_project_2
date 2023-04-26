@@ -14,16 +14,29 @@ router.get('/', (req, res, next) => {
       }
     })
 })
+
+//Get api for a service given some id and it is active for the org
+router.get('/:id', (req, res, next) => {
+  services
+    .findOne({ _id: req.params.id, org: org, active:true }, (error, data) => {
+      if (error) {
+        return next(error)
+      } else {
+        return res.json(data)
+      }
+    })
+})
+
 // Get to allow filtering of services
 router.get('/search', (req, res, next) => {
-  const dbQuery = { orgs: org }
+  const dbQuery = { org: org, active: true }
   switch (req.query.searchBy) {
     case 'name':
-      dbQuery.serviceName = { $regex: `^${req.query.serviceName}`, $options: 'i' }
+      dbQuery.serviceName = { $regex: req.query.serviceName, $options: 'i' }
       break
     case 'desc':
       dbQuery.serviceDescription = {
-        $regex: `^${req.query.serviceDescription}`,
+        $regex: req.query.serviceDescription,
         $options: 'i'
       }
       break
