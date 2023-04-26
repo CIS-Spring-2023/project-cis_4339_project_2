@@ -1,4 +1,3 @@
-
 <template>
   <div class="shadow-lg rounded-lg overflow-hidden">
     <canvas class="p-20" ref="piechart"></canvas>
@@ -6,6 +5,7 @@
 </template>
 
 <script>
+// using chart.js library for the pie chart
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables);
 
@@ -19,6 +19,7 @@ export default {
     }
   },
   async mounted() {
+    // Random choosing of background and border colors
     const backgroundColor = this.chartData.map(() => this.getColor())
     const borderColor = backgroundColor.map((e) =>
       e.replace(/[\d\.]+\)$/g, '1)')
@@ -42,8 +43,15 @@ export default {
         plugins: {
           legend: {
             display: true, 
-               //display the legends 
+               // Choosing to display the legend
         
+          },
+          title: { // Title with increased size set here
+            display: true,
+            text: 'Clients by Zip Code',
+            font: {
+              size: 20
+            }
           }
         },
         responsive: true,

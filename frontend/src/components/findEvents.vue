@@ -1,9 +1,15 @@
 <script>
 import { DateTime } from 'luxon'
+import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
+  setup() {
+    const user = loggedInUser();
+    return { user }
+  },
+
   data() {
     return {
       events: [],
@@ -14,8 +20,13 @@ export default {
     }
   },
   mounted() {
+    if (!this.user.LoggedIn) {
+      this.$router.push("/")
+    };
+
     this.getEvents()
   },
+  
   methods: {
     // better formattedDate
     formattedDate(datetimeDB) {
@@ -39,7 +50,7 @@ export default {
     },
     // abstracted method to get events
     getEvents() {
-      axios.get(`${apiURL}/events`).then((res) => {
+      axios.get(`${apiURL}/events/`).then((res) => {
         this.events = res.data
       })
       window.scrollTo(0, 0)
@@ -135,7 +146,7 @@ export default {
     >
       <div class="ml-10">
         <h2 class="text-2xl font-bold">List of Events</h2>
-        <h3 class="italic">Click table row to edit/display an entry</h3>
+        <h3 class="italic" v-if="user.role == 'write'">Click table row to edit/display an entry</h3>
       </div>
       <div class="flex flex-col col-span-2">
         <table class="min-w-full shadow-md rounded">

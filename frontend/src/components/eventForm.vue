@@ -1,13 +1,22 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import {servicesStore} from '../store/Services'
+import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   setup() {
-    return { v$: useVuelidate({ $autoDirty: true }) }
+    const store = servicesStore()
+    const user = loggedInUser()
+    return {
+        v$: useVuelidate({ $autoDirty: true}),
+        store,
+        user
+    }
   },
+
   data() {
     return {
       // removed unnecessary extra array to track services
@@ -23,9 +32,24 @@ export default {
           zip: ''
         },
         description: ''
-      }
+      },
+      dbservices: []
     }
   },
+
+  created() {
+    axios.get(`${apiURL}/services/`).then((res) => {
+      this.dbservices = res.data;
+    })
+
+  },
+  mounted() {  // login controls for users missing permissions are included in the mounted statement
+    if (!this.user.LoggedIn || this.user.role == 'read') {
+      this.$router.push("/")
+    };
+
+  },
+
   methods: {
     async handleSubmitForm() {
       // Checks to see if there are any errors in validation
@@ -33,7 +57,7 @@ export default {
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
         axios
-          .post(`${apiURL}/events`, this.event)
+          .post(`${apiURL}/events/`, this.event)
           .then(() => {
             alert('Event has been added.')
             this.$router.push({ name: 'findevents' })
@@ -70,7 +94,7 @@ export default {
         <!-- grid container -->
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
-        >
+         >
           <h2 class="text-2xl font-bold">Event Details</h2>
 
           <!-- form field -->
@@ -136,61 +160,24 @@ export default {
           <!-- form field -->
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
-            <div>
-              <label for="familySupport" class="inline-flex items-center">
+            <!-- dynamic rendering of active services is possible using a Pinia store -->
+            <div v-for="service in dbservices" :key="service._id">
+              <div v-if="service.active">
+              <label :for="service.serviceName" class="inline-flex items-center">
                 <input
                   type="checkbox"
-                  id="familySupport"
-                  value="Family Support"
+                  :id="service.serviceName"
+                  :value="service.serviceName"
                   v-model="event.services"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
                   notchecked
                 />
-                <span class="ml-2">Family Support</span>
+                <span class="ml-2"> {{ service.serviceName }} </span>
               </label>
             </div>
-            <div>
-              <label for="adultEducation" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="adultEducation"
-                  value="Adult Education"
-                  v-model="event.services"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Adult Education</span>
-              </label>
-            </div>
-            <div>
-              <label for="youthServices" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="youthServices"
-                  value="Youth Services Program"
-                  v-model="event.services"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Youth Services Program</span>
-              </label>
-            </div>
-            <div>
-              <label for="childhoodEducation" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="childhoodEducation"
-                  value="Early Childhood Education"
-                  v-model="event.services"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Early Childhood Education</span>
-              </label>
             </div>
           </div>
         </div>
-
         <!-- grid container -->
         <div
           class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"

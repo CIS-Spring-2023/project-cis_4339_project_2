@@ -7,6 +7,7 @@ export default {
   name: 'App',
 
   setup() {
+    // Will use the login store to conditonally render the navigation
     const user = loggedInUser();
     return { user };
   },
@@ -15,11 +16,6 @@ export default {
     return {
       orgName: 'Community Platform'
     }
-  },
-  created() {
-    axios.get(`${apiURL}/org`).then((res) => {
-      this.orgName = res.data.name
-    })
   }
 }
 </script>
@@ -32,17 +28,17 @@ export default {
         </section>
         <nav class="mt-10">
           <ul class="flex flex-col gap-4">
-            <div v-if="user.LoggedIn">
+            
               <li>
                 <router-link to="/home">
                   <span
                     style="position: relative; top: 6px"
                     class="material-icons"
-                    >dashboard</span
-                  >
+                    >dashboard</span>
                   Dashboard
                 </router-link>
               </li>
+              <div v-if="user.LoggedIn"> <!-- Only rendering nav items beyond the dashboard if the user is logged in -->
               <li>
                 <router-link to="/findclient">
                   <span
@@ -61,6 +57,16 @@ export default {
                     >search</span
                   >
                   Find Event
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/findservices">
+                  <span
+                    style="position: relative; top: 6px"
+                    class="material-icons"
+                    >search</span
+                  >
+                  Find Services
                 </router-link>
               </li>
               <span v-if="user.role == 'write'" >
@@ -85,25 +91,35 @@ export default {
                     Create Event
                   </router-link>
                 </li>
+                <li>
+                  <router-link to="/createServices">
+                    <span
+                      style="position: relative; top: 6px"
+                      class="material-icons"
+                      >event</span
+                    >
+                    Create Services
+                  </router-link>
+                </li>
               </span>
               <li>
                 <span
                     style="position: relative; top: 6px"
                     class="material-icons"
                     >
-                    people
+                    person
                   </span>
                   <a href="">
                     <span @click="user.logout()">Log Out</span>
                   </a>
               </li>
             </div>
-            <li v-if="!user.LoggedIn">
+            <li v-if="!user.LoggedIn"> <!-- Showing the login button if user is not logged in otherwise shows the logout button -->
               <router-link to="/">
                   <span
                     style="position: relative; top: 6px"
                     class="material-icons"
-                    >people</span
+                    >person</span
                   >
                   Log In
                 </router-link>
