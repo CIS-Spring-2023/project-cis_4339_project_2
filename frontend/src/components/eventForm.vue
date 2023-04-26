@@ -1,18 +1,15 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn.js'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   setup() {
-    const store = servicesStore()
     const user = loggedInUser()
     return {
         v$: useVuelidate({ $autoDirty: true}),
-        store,
         user
     }
   },
@@ -22,7 +19,6 @@ export default {
       // removed unnecessary extra array to track services
       event: {
         name: '',
-        services: [],
         date: '',
         address: {
           line1: '',
@@ -33,13 +29,13 @@ export default {
         },
         description: ''
       },
-      dbservices: []
+      services: []
     }
   },
 
   created() {
     axios.get(`${apiURL}/services/`).then((res) => {
-      this.dbservices = res.data;
+      this.services = res.data;
     })
 
   },
@@ -161,7 +157,7 @@ export default {
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
             <!-- dynamic rendering of active services is possible using a Pinia store -->
-            <div v-for="service in dbservices" :key="service._id">
+            <div v-for="service in services" :key="service._id">
               <div v-if="service.active">
               <label :for="service.serviceName" class="inline-flex items-center">
                 <input

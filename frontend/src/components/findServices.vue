@@ -1,13 +1,11 @@
 <script>
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
-import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn'
 export default {
   setup() {
-    const store = servicesStore()
     const user = loggedInUser()
-    return { store, user }
+    return { user }
   },
 
   created() {

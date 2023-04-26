@@ -1,7 +1,6 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import {servicesStore} from '../store/Services'
 import { loggedInUser } from '../store/LoggedIn'
 const apiURL = import.meta.env.VITE_ROOT_API
 
@@ -10,11 +9,9 @@ const apiURL = import.meta.env.VITE_ROOT_API
 export default {
    props: ['id'],
    setup() {
-    const store = servicesStore()
     const user = loggedInUser()
     return {
         v$: useVuelidate({ $autoDirty: true}),
-        store,
         user
     }
   },
@@ -31,9 +28,8 @@ export default {
     }
   },
   created() {
-
   const serviceId = this.$route.params.id;
-  this.service = this.store.getService(serviceId)
+  this.service = {};
   },
 
   mounted() { // Login controls
