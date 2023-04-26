@@ -1,4 +1,4 @@
-@@ -0,0 +1,139 @@
+
 <script>
 import { DateTime } from 'luxon'
 import axios from 'axios'
@@ -15,12 +15,13 @@ export default {
       recentEvents: [],
       labels: [],
       chartData: [],
+      chartData2: [],
       loading: false,
       error: null
     }
   },
   mounted() {
-    this.getAttendanceData()
+    this.getAttendanceData(), this.getPiechartData()
   },
   methods: {
     async getAttendanceData() {
@@ -64,12 +65,54 @@ export default {
         .setZone(DateTime.now().zoneName, { keepLocalTime: true })
         .toLocaleString()
     },
+    async getPiechartData() {
+      try {
+        this.error = null
+        this.loading = true
+        const response = await axios.get(`${apiURL}/clients`)
+        const dataByZip = response.data;
+        const dataMap = new Map();
+        dataByZip.forEach(clients => {
+          if (!dataMap.has(clients.address.zip)) {
+            dataMap.set(clients.address.zip, 1);
+          } else {
+            dataMap.set(clients.address.zip, dataMap.get(clients.address.zip) + 1);
+          }
+        });
+        this.chartData2 = Array.from(dataMap, ([zip, count]) => ({
+          label: zip,
+          value: count,
+        }))
+      } catch (err) {
+        if (err.response) {
+          // client received an error response (5xx, 4xx)
+          this.error = {
+            title: 'Server Response',
+            message: err.message
+          }
+        } else if (err.request) {
+          // client never received a response, or request never left
+          this.error = {
+            title: 'Unable to Reach Server',
+            message: err.message
+          }
+        } else {
+          // There's probably an error in your code
+          this.error = {
+            title: 'Application Error',
+            message: err.message
+          }
+        }
+      }
+      this.loading = false
+    },
+
+      },
     // method to allow click through table to event details
     editEvent(eventID) {
       this.$router.push({ name: 'eventdetails', params: { id: eventID } })
     }
   }
-}
 </script>
 
 <template>

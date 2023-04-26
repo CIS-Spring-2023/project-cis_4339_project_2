@@ -14,7 +14,7 @@ export default {
     label: {
       type: Array
     },
-    chartData: {
+    chartData2: {
       type: Array
     }
   },
@@ -30,7 +30,7 @@ export default {
         datasets: [
           {
             label: 'Clients',
-            data: this.chartData,
+            data: this.chartData2,
             backgroundColor: backgroundColor,
             borderColor: borderColor,
             
@@ -54,7 +54,7 @@ export default {
   methods: {
     getColor() {
       let channel = () => Math.random() * 255
-      return `rgba(${channel()}, ${channel()}, ${channel()}, 0.9)`
+      return `rgba(${channel()}, ${channel()}, ${channel()}, 0.4)`
     }
   }
 }
