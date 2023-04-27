@@ -13,9 +13,14 @@ Make sure you have a collection named 'org' in your database that contains at le
 
 Setup a .env file with the following variables: MONGO_URL, PORT and ORG
 
-    MONGO_URL= that is the Mongo URL connection string
-    PORT= e.g.3000
-    ORG= that is the orgid (as a string)
+- MONGO_URL = mongodb+srv://kgromana:KTAProj39@4339-kta.rr5t7uz.mongodb.net/dataplatform?retryWrites=true&w=majority
+- PORT = 3000 ** please be sure this port number matches the port found in the frontend .env VITE_ROOT_API string **
+- ORG = 'communitygarden'
+
+Change the value of ORG to access data for another organization. The data currently in the database contains information for:
+- communitygarden
+- waterfront
+- municipal
 
 ### Compiles and hot-reloads for development
 
