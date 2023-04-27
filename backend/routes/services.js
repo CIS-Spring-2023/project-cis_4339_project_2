@@ -28,15 +28,16 @@ router.get('/:id', (req, res, next) => {
 })
 
 // Get to allow filtering of services
-router.get('/search', (req, res, next) => {
+router.get('/search/:searchBy/:term', (req, res, next) => {
+  console.log("Running route")
   const dbQuery = { org: org, active: true }
-  switch (req.query.searchBy) {
+  switch (req.params.searchBy) {
     case 'name':
-      dbQuery.serviceName = { $regex: req.query.serviceName, $options: 'i' }
+      dbQuery.serviceName = { $regex: req.params.term, $options: 'i' }
       break
     case 'desc':
       dbQuery.serviceDescription = {
-        $regex: req.query.serviceDescription,
+        $regex: req.params.term,
         $options: 'i'
       }
       break

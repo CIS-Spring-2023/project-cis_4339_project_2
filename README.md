@@ -60,3 +60,6 @@ Please be sure that the port assigned to PORT and the port found in the VITE_ROO
 - https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/array/find
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
 - https://vuejs.org/guide/essentials/forms.html#multiline-text
+- https://mongoosejs.com/docs/schematypes.html#schematype-options
+- https://masteringjs.io/tutorials/mongoose/find-by-id
+- https://stackoverflow.com/questions/62734301/chart-js-chart-not-displaying-until-i-open-the-browsers-console
