@@ -103,12 +103,12 @@ export default {
       this.pieLoading = false
     },
 
-      },
+      
     // method to allow click through table to event details
     editEvent(eventID) {
       this.$router.push({ name: 'eventdetails', params: { id: eventID } })
     }
-  }
+  }}
 </script>
 
 <template>
