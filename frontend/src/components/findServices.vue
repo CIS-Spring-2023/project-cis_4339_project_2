@@ -24,7 +24,8 @@ export default {
       // Parameter for search to occur
       searchBy: '',
       serviceName: '',
-      serviceDescription: ''
+      serviceDescription: '',
+      searchTerm: ''
     }
   },
 
@@ -32,11 +33,13 @@ export default {
     handleSubmitForm() {
       let endpoint = ''
       if (this.searchBy === "Service Name") {
-        endpoint = `services/search?serviceName=${this.serviceName}&searchBy=name`
+        endpoint = `services/search/name/${this.searchTerm}`
       } else if (this.searchBy === "Service Description") {
-        endpoint = `services/search?serviceDescription=${this.serviceDescription}&searchBy=desc`
+        endpoint = `services/search/desc/${this.searchTerm}`
       }
+      console.log(`${apiURL}/${endpoint}`)
       axios.get(`${apiURL}/${endpoint}`).then((res) => {
+        console.log(res.data)
         this.services = res.data
       })
 
@@ -54,6 +57,7 @@ export default {
       this.searchBy = ''
       this.serviceName = ''
       this.serviceDescription = ''
+      this.searchTerm = ''
 
       // get all entries
       this.getServices()
@@ -99,7 +103,7 @@ export default {
             <input
               type="text"
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              v-model="serviceName"
+              v-model="searchTerm"
               v-on:keyup.enter="handleSubmitForm"
               placeholder="Enter Service Name"
             />
@@ -110,7 +114,7 @@ export default {
           <input
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             type="text"
-            v-model="serviceDescription"
+            v-model="searchTerm"
             v-on:keyup.enter="handleSubmitForm"
             placeholder="Enter Service description"
           />
