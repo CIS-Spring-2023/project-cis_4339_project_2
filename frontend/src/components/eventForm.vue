@@ -19,6 +19,7 @@ export default {
       // removed unnecessary extra array to track services
       event: {
         name: '',
+        services: [],
         date: '',
         address: {
           line1: '',
@@ -29,13 +30,13 @@ export default {
         },
         description: ''
       },
-      services: []
+      dbservices: []
     }
   },
 
   created() {
     axios.get(`${apiURL}/services/`).then((res) => {
-      this.services = res.data;
+      this.dbservices = res.data;
     })
 
   },
@@ -157,7 +158,7 @@ export default {
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
             <!-- dynamic rendering of active services is possible using a Pinia store -->
-            <div v-for="service in services" :key="service._id">
+            <div v-for="service in dbservices" :key="service._id">
               <div v-if="service.active">
               <label :for="service.serviceName" class="inline-flex items-center">
                 <input
