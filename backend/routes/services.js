@@ -88,7 +88,7 @@ router.put('/update/:id', (req, res, next) => {
   }
 })
 //Soft deletes an entry based on given id
-router.delete('/delete/:id', (req, res, next) => {
+router.put('/delete/:id', (req, res, next) => {
   try {
     const service = req.body;
     service.active = false;

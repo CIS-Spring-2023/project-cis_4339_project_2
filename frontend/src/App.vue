@@ -16,8 +16,14 @@ export default {
     return {
       orgName: 'Community Platform'
     }
+  },
+  created() {
+    axios.get(`${apiURL}/org/`).then((res) => {
+      this.orgName = res.data.name
+    })
   }
 }
+
 </script>
 <template>
   <main class="flex flex-row">

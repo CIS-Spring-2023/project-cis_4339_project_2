@@ -67,7 +67,7 @@ export default {
     },
 
     deleteService(id, service) {
-      axios.delete(`${apiURL}/services/delete/${id}`, {data: service}).then(() =>{
+      axios.put(`${apiURL}/services/delete/${id}`, {data: service}).then(() =>{
         this.getServices()
       })
     }
