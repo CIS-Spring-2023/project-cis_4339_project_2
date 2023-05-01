@@ -38,7 +38,7 @@ Another .env file should be placed in the backend directory and contain:
 - PORT = 3000
 - ORG = 'communitygarden'
 
-Change the value of ORG to access data for another organization. The data currently in the database contains information for:
+Change the value of ORG to access data for another organization. The database currently holds data for:
 - communitygarden
 - waterfront
 - municipal
@@ -63,3 +63,4 @@ Please be sure that the port assigned to PORT and the port found in the VITE_ROO
 - https://mongoosejs.com/docs/schematypes.html#schematype-options
 - https://masteringjs.io/tutorials/mongoose/find-by-id
 - https://stackoverflow.com/questions/62734301/chart-js-chart-not-displaying-until-i-open-the-browsers-console
+- ChatGPT
